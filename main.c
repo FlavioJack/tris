@@ -9,7 +9,7 @@
 int random_max_min(int, int);
 void enemyGame(char campo[][SIZE]);		//
 void playerGame(char campo[][SIZE]);	//
-void newGame(char campo[][SIZE]);		// clear the field so empty the array
+void clearField(char campo[][SIZE]);		// clear the field so empty the array
 void printField(void); 					// print the field to show it graphically
 
 
@@ -25,7 +25,7 @@ int main(void)
 
 	char campo[SIZE][SIZE]; // definisco il campo come un array di char dove posiziono 'X' e 'O'
 	
-	newGame(campo); // clear the field
+	clearField(campo); // clear the field
 	//printField();
 	// choose first player 
    	//playerGame();
@@ -75,7 +75,7 @@ void playerGame(char campo[][SIZE])
 
 
 // clear the field so empty the array
-void newGame(char campo[][SIZE])
+void clearField(char campo[][SIZE])
 {
 	for(size_t i=0; i<SIZE; i++)
 	{
@@ -109,3 +109,18 @@ int random_max_min(int min, int max){
 // funzione per far inserire al player il segno X
 // funzione per stampare grafica del campo
 // funzione per pulire campo e avviare nuova partita
+
+/*
+
+	svuota il campo,
+	stampa il campo,
+	tira a sorte per chi inizia,
+	finché non finisce la partita (vittoria o pareggio) si alternano,
+		player1,
+		stampa il campo,
+		player2,
+		stampa il campo,
+		...
+	inizia nuovo gioco o esci
+
+*/
