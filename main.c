@@ -32,7 +32,8 @@ int main(void)
 
 	srand(time(NULL));
 
-	char campo[SIZE][SIZE]; // define the field as a char array assigning 'X' and 'O'
+	// define the field as a char array assigning 'X' and 'O'
+	char campo[SIZE][SIZE]; 
 	
 	clearField(campo); // clear the field
 	printField(campo); // print the field in the terminal
@@ -104,7 +105,7 @@ void enemyGame(char campo[][SIZE], enum players *selectedPlayer)
 	short x = random_max_min(0, 2); // (short)
 	short y = random_max_min(0, 2);
 
-	while (campo[x][y] != '\0') // if the field is already signed, generate another random position
+	while (campo[x][y] != ' ') // if the field is already signed, generate another random position
 	{
 		x = random_max_min(0, 2);
 		y = random_max_min(0, 2);
@@ -127,7 +128,7 @@ void playerGame(char campo[][SIZE], enum players *selectedPlayer)
 		scanf("%hd", &y);
 	}
 	// field must be empty and coordinates between 0 and 2
-	while( (x<0 || x>2) && (y<0 || y>2) && (campo[x][y] != '\0') );
+	while( (x<0 || x>2) && (y<0 || y>2) && (campo[x][y] != ' ') );
 	
 	campo[x][y] = 'X'; // insert player sign
 	
@@ -151,7 +152,7 @@ void clearField(char campo[][SIZE])
 	{
 		for(size_t j=0; j<SIZE; j++)
 		{
-			campo[i][j] == '\0';
+			campo[i][j] = ' ';
 		}
 	}
 }
@@ -161,11 +162,11 @@ void clearField(char campo[][SIZE])
 // print the field on the cli
 void printField(char campo[][SIZE])
 {
-	printf(" %c | %c | %c\n", campo[0][0], campo[0][1], campo[0][2]);
+	printf(" %c | %c | %c \n", campo[0][0], campo[0][1], campo[0][2]);
 	printf("%s\n", "---+---+---");
-	printf(" %c | %c | %c\n", campo[1][0], campo[1][1], campo[1][2]);
+	printf(" %c | %c | %c \n", campo[1][0], campo[1][1], campo[1][2]);
 	printf("%s\n", "---+---+---");
-	printf(" %c | %c | %c\n", campo[2][0], campo[2][1], campo[2][2]);
+	printf(" %c | %c | %c \n", campo[2][0], campo[2][1], campo[2][2]);
 }
 
 
