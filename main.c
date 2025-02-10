@@ -13,7 +13,7 @@ int random_max_min(int, int); 			// function for random number generator
 void game(); // a single game
 void enemyGame(char campo[][SIZE], enum players *);		// 
 void playerGame(char campo[][SIZE], enum players *);	//
-void checkVictory(); 					// function that checks if anyone won
+void checkVictory(char campo[][SIZE]); 	// function that checks if anyone won
 void clearField(char campo[][SIZE]);	// clear the field so empty the array
 void printField(char campo[][SIZE]); 	// print the field to show it graphically
 
@@ -39,13 +39,16 @@ int main(void)
 	printField(campo); // print the field in the terminal
 	
 	// choose first player, if new game then select player based on random number
-	if(random_max_min(0, 1) && gameStatus == NEWGAME) 
+	if(random_max_min(0, 1) == 1 && gameStatus == NEWGAME) 
 	{
 		selectedPlayer = PLAYER; // start player1
 	}  
-	else selectedPlayer = ENEMY; // start player2
+	else if(random_max_min(0, 1) == 0 && gameStatus == NEWGAME)
+	{
+		selectedPlayer = ENEMY; // start player2	
+	} 
 
-	gameStatus = RUNNING; // after i selected the player we can consider the game is running
+	gameStatus = RUNNING; // after selected the player we can consider the game is running
 
 	// players can make a game until no one win
 	while(gameStatus == RUNNING) 
@@ -136,8 +139,23 @@ void playerGame(char campo[][SIZE], enum players *selectedPlayer)
 	*selectedPlayer = ENEMY;
 }
 
+// check if the player wins, looses or it's a draw
 void checkVictory()
 {
+	short x=0;
+	while(x<=2)
+	{
+		if( campo[x][0] == campo[x][1] == campo[x][2] )
+		{
+			//controlla che abbia vinto X o O
+			//change gameStatus
+		}
+		else
+		{
+			x++;
+		}
+	}
+
 	// controlla se qualcuno ha fatto tris
 	// se player ha fatto allora gameStatus = WON, se enemy allora gameStatus = LOST 
 	// altrimenti se campo e' tutto pieno e nessuno ha vinto allora gameStatus = DRAW	
@@ -189,6 +207,7 @@ int random_max_min(int min, int max){
 		player2,
 		stampa il campo,
 		...
-	inizia nuovo gioco o esci
+	controlla vittoria, sconfitta o pareggio
+	inizia nuovo gioco o esci, IMPOSTARE NEWGAME A INIZIO NUOVA PARTITA 
 
 */
