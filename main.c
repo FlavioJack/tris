@@ -10,13 +10,13 @@
 enum status {WON, LOST, DRAW, NEWGAME, RUNNING}; 
 enum players {PLAYER, ENEMY};
 
-int random_max_min(int, int); 			// function for random number generator
+int random_max_min(int, int); 							// function for random number generator
 void game(char campo[][SIZE], enum players *, enum status *); // a single game
 void enemyGame(char campo[][SIZE], enum players *);		// 
 void playerGame(char campo[][SIZE], enum players *);	//
 void checkVictory(char campo[][SIZE], enum status *); 	// function that checks if anyone won
-void clearField(char campo[][SIZE]);	// clear the field so empty the array
-void printField(char campo[][SIZE]); 	// print the field to show it graphically
+void clearField(char campo[][SIZE]);					// clear the field so empty the array
+void printField(char campo[][SIZE]); 					// print the field to show it graphically
 
 
 // ============================================================================= //
@@ -27,20 +27,40 @@ void printField(char campo[][SIZE]); 	// print the field to show it graphically
 
 int main(void)
 {
-	
-	enum status gameStatus = NEWGAME; // as soon as we start the program we can assume we're starting a new game
-	enum players selectedPlayer; // stores which player is playing
+	enum status gameStatus; 		// as soon as we start the program we can assume we're starting a new game
+	enum players selectedPlayer; 	// stores which player is playing
+	char campo[SIZE][SIZE]; 		// define the field as a char array where the players assign 'X' and 'O'
+	bool playAgain; 				// stores if you want to start another game
 
 	srand(time(NULL));
 
-	// define the field as a char array assigning 'X' and 'O'
-	char campo[SIZE][SIZE]; 
-	
-	game(campo, &selectedPlayer, &gameStatus);
+	do
+	{
+		gameStatus = NEWGAME;
 
-	// printf(Hai vinto) oppure printf(hai perso)
-	// chiedi se iniziare nuova partita o uscire, 
-	// se avvio nuova partita fai game()
+		game(campo, &selectedPlayer, &gameStatus);
+
+		switch(gameStatus)
+		{
+			case WON:
+				puts("Complimenti, hai vinto!");
+				break;
+			case LOST:
+				puts("Ops, mi dispiace hai perso.");
+				break;
+			default:
+				puts("Qualcosa è andato storto.");
+		}
+
+		puts("Vuoi avviare una nuova partita? s -> si");
+		if(getchar() == 's')
+		{
+			playAgain = true;
+		}
+		else playAgain = false;
+	}
+	while(playAgain);
+	
    	return 0;
 }
 
@@ -50,13 +70,15 @@ int main(void)
 // ============================================================================= //
 // ============================================================================= //
 
+
+
 void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameStatus)
 {
 	clearField(campo); // clear the field
 	printField(campo); // print the field in the terminal
 	
-	// choose first player, if new game then select player based on random number
-	if(random_max_min(0, 1) && *gameStatus == NEWGAME) 
+	// choose first player based on random number
+	if(random_max_min(0, 1)) 
 	{
 		*selectedPlayer = PLAYER; // start player1
 	}  
@@ -64,10 +86,10 @@ void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameS
 
 	*gameStatus = RUNNING; // after i selected the player we can consider the game is running
 
-	// players can make a game until no one win
+	// players can play until anyone win
 	while(*gameStatus == RUNNING) 
 	{
-		// one of the two players makes a game 
+		// one of the two players play a turn 
 		if(*selectedPlayer == PLAYER)
 		{
 			playerGame(campo, selectedPlayer); 
@@ -80,16 +102,14 @@ void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameS
 
 
 void enemyGame(char campo[][SIZE], enum players * selectedPlayer)
-{
-	// generate random coordinates between 0 and 2
-	short x = random_max_min(0, 2); // (short)
-	short y = random_max_min(0, 2);
-
-	while (campo[x][y] != ' ') // if the field is already signed, generate another random position
-	{
-		x = random_max_min(0, 2);
+{	
+	size_t x, y;
+	do
+	{	// generate random coordinates between 0 and 2
+		x = random_max_min(0, 2); 
 		y = random_max_min(0, 2);
 	}
+	while(campo[x][y] != ' '); // if the field is already signed, generate another random position
 
 	campo[x][y] = 'O'; // insert enemy player sign
 
@@ -99,13 +119,13 @@ void enemyGame(char campo[][SIZE], enum players * selectedPlayer)
 
 void playerGame(char campo[][SIZE], enum players * selectedPlayer)
 {
-	short x, y; // coordinates
+	size_t x, y; // coordinates
 	do
 	{
 		puts("Inserisci coordinata x: ");
-		scanf("%hd", &x);
+		scanf("%zu", &x);
 		puts("Inserisci coordinata y: ");
-		scanf("%hd", &y);
+		scanf("%zu", &y);
 	}
 	// field must be empty and coordinates between 0 and 2
 	while( (x<0 || x>2) && (y<0 || y>2) && (campo[x][y] != ' ') );
@@ -143,26 +163,26 @@ void checkVictory(char campo[][SIZE], enum status *gameStatus)
 		else y++;
 	}
 	// check diagonal tris
-	if( (campo[0][0] == campo[1][1] == campo[2][2]) || (campo[2][0] == campo[1][1] == campo[0][2]))
+	if( (campo[0][0] == campo[1][1] == campo[2][2]) || (campo[2][0] == campo[1][1] == campo[0][2]) )
 	{
 		endGame = true;
 		storeWinner = campo[1][1]; 
 	}
 
 	// check draw
-	short full = 0;
+	short countMarked = 0; // count number of full spaces to check the draw
 	for(size_t i=0; i<SIZE; i++)
 	{
 		for(size_t j=0; j<SIZE; j++)
 		{	// count marked spaces
-			if( (campo[i][j] != ' ') && (campo[i][j] == 'X' || campo[i][j] == 'O') )
+			if( (campo[i][j] != ' ') && (campo[i][j] == 'X' || campo[i][j] == 'O') ) // la casella non deve essere vuota e contemporaneamente essere o X oppure O
 			{
-				full++;
+				countMarked++;
 			}
-			else full--;
+			else countMarked--;
 		}
 	}
-	if(full == 9 && !endGame) // if the spaces are all full and anyone won or lost (endGame is true in those cases)
+	if(countMarked == 9 && !endGame) // if the spaces are all full and anyone won or lost (endGame is true in those cases)
 	{
 		*gameStatus = DRAW;
 	}
@@ -204,21 +224,3 @@ void printField(char campo[][SIZE])
 int random_max_min(int min, int max){
     return (rand()+min) % (max+1);
 }
-
-
-
-/*
-
-	svuota il campo,
-	stampa il campo,
-	tira a sorte per chi inizia,
-	finché non finisce la partita (vittoria o pareggio) si alternano,
-		player1,
-		stampa il campo,
-		player2,
-		stampa il campo,
-		...
-	controlla vittoria, sconfitta o pareggio
-	inizia nuovo gioco o esci, IMPOSTARE NEWGAME A INIZIO NUOVA PARTITA 
-
-*/
