@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define SIZE 3
 
@@ -13,7 +14,7 @@ int random_max_min(int, int); 			// function for random number generator
 void game(); // a single game
 void enemyGame(char campo[][SIZE], enum players *);		// 
 void playerGame(char campo[][SIZE], enum players *);	//
-void checkVictory(char campo[][SIZE]); 	// function that checks if anyone won
+void checkVictory(char campo[][SIZE], enum status *); 	// function that checks if anyone won
 void clearField(char campo[][SIZE]);	// clear the field so empty the array
 void printField(char campo[][SIZE]); 	// print the field to show it graphically
 
@@ -62,7 +63,8 @@ int main(void)
 		// printField();
 		// checkVictory();
 	}
-
+	// chiedi se iniziare nuova partita o uscire, 
+	// se avvio nuova partita fai game()
    	return 0;
 }
 
@@ -140,27 +142,62 @@ void playerGame(char campo[][SIZE], enum players *selectedPlayer)
 }
 
 // check if the player wins, looses or it's a draw
-void checkVictory()
+void checkVictory(char campo[][SIZE], enum status *gameStatus)
 {
-	short x=0;
+	bool endGame = false;
+	char storeWinner; // store the mark (X or O) of the winner
+	size_t x=0, y=0;
+
+	// check horizontal tris
 	while(x<=2)
 	{
 		if( campo[x][0] == campo[x][1] == campo[x][2] )
 		{
-			//controlla che abbia vinto X o O
-			//change gameStatus
+			endGame = true;
+			storeWinner = campo[x][0]; 
 		}
-		else
+		else x++;
+	}
+	// check vertical tris
+	while(y<=2)
+	{
+		if( campo[0][y] == campo[1][y] == campo[2][y] )
 		{
-			x++;
+			endGame = true;
+			storeWinner = campo[0][y]; 
 		}
+		else y++;
+	}
+	// check diagonal tris
+	if( (campo[0][0] == campo[1][1] == campo[2][2]) || (campo[2][0] == campo[1][1] == campo[0][2]))
+	{
+		endGame = true;
+		storeWinner = campo[1][1]; 
 	}
 
-	// controlla se qualcuno ha fatto tris
-	// se player ha fatto allora gameStatus = WON, se enemy allora gameStatus = LOST 
-	// altrimenti se campo e' tutto pieno e nessuno ha vinto allora gameStatus = DRAW	
-	// chiedi se iniziare nuova partita o uscire, 
-	// se avvio nuova partita fai game(); e game() include tutto il main da cleanField() alla fine
+	// check draw
+	short full = 0;
+	for(size_t i=0; i<SIZE; i++)
+	{
+		for(size_t j=0; j<SIZE; j++)
+		{	// count marked spaces
+			if( (campo[i][j] != ' ') && (campo[i][j] == 'X' || campo[i][j] == 'O') )
+			{
+				full++;
+			}
+			else full--;
+		}
+	}
+	if(full == 9 && !endGame) // if the spaces are all full and anyone won or lost (endGame is true in those cases)
+	{
+		*gameStatus = DRAW;
+	}
+
+	// check who won
+	if(endGame)
+	{	
+		*gameStatus = (storeWinner == 'X') ? WON : LOST;
+	}
 }
 
 
