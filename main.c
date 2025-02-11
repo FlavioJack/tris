@@ -50,31 +50,31 @@ int main(void)
 // ============================================================================= //
 // ============================================================================= //
 
-void game(char campo[][SIZE], enum players * gameStatus, enum status * selectedPlayer)
+void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameStatus)
 {
 	clearField(campo); // clear the field
 	printField(campo); // print the field in the terminal
 	
 	// choose first player, if new game then select player based on random number
-	if(random_max_min(0, 1) && *status == NEWGAME) 
+	if(random_max_min(0, 1) && *gameStatus == NEWGAME) 
 	{
-		*player = PLAYER; // start player1
+		*selectedPlayer = PLAYER; // start player1
 	}  
-	else *player = ENEMY; // start player2
+	else *selectedPlayer = ENEMY; // start player2
 
-	*status = RUNNING; // after i selected the player we can consider the game is running
+	*gameStatus = RUNNING; // after i selected the player we can consider the game is running
 
 	// players can make a game until no one win
-	while(*status == RUNNING) 
+	while(*gameStatus == RUNNING) 
 	{
 		// one of the two players makes a game 
-		if(*player == PLAYER)
+		if(*selectedPlayer == PLAYER)
 		{
-			playerGame(campo, selectedPlayer); //
+			playerGame(campo, selectedPlayer); 
 		}
-		else enemyGame(campo, selectedPlayer); //
+		else enemyGame(campo, selectedPlayer); 
 		printField(campo);
-		checkVictory(campo, gameStatus); //
+		checkVictory(campo, gameStatus); 
 	}
 }
 
