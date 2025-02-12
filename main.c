@@ -48,6 +48,9 @@ int main(void)
 			case LOST:
 				puts("Ops, mi dispiace hai perso.");
 				break;
+			case DRAW:
+				puts("Hai pareggiato.");
+				break;
 			default:
 				puts("Qualcosa è andato storto.");
 		}
@@ -103,6 +106,7 @@ void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameS
 
 void enemyGame(char campo[][SIZE], enum players * selectedPlayer)
 {	
+	puts("E' il turno dell'avversario.");
 	size_t x, y;
 	do
 	{	// generate random coordinates between 0 and 2
@@ -119,6 +123,7 @@ void enemyGame(char campo[][SIZE], enum players * selectedPlayer)
 
 void playerGame(char campo[][SIZE], enum players * selectedPlayer)
 {
+	puts("E' il tuo turno.");
 	size_t x, y; // coordinates
 	do
 	{
@@ -128,7 +133,7 @@ void playerGame(char campo[][SIZE], enum players * selectedPlayer)
 		scanf("%zu", &y);
 	}
 	// field must be empty and coordinates between 0 and 2
-	while( (x<0 || x>2) && (y<0 || y>2) && (campo[x][y] != ' ') );
+	while( x<0 || x>2 || y<0 || y>2 || campo[x][y] != ' ' );
 	
 	campo[x][y] = 'X'; // insert player sign
 	
@@ -140,30 +145,31 @@ void checkVictory(char campo[][SIZE], enum status *gameStatus)
 {
 	bool endGame = false;
 	char storeWinner; // store the mark (X or O) of the winner
-	size_t x=0, y=0;
 
 	// check horizontal tris
-	while(x<=2)
+	for(size_t x=0; x<SIZE; x++)
 	{
-		if( campo[x][0] == campo[x][1] == campo[x][2] )
+		if( campo[x][0] != ' ' && campo[x][0] == campo[x][1] && campo[x][1] == campo[x][2] )
 		{
 			endGame = true;
-			storeWinner = campo[x][0]; 
+			storeWinner = campo[x][0];
+			break; 
 		}
-		else x++;
 	}
+
 	// check vertical tris
-	while(y<=2)
+	for(size_t y=0; y<SIZE; y++)
 	{
-		if( campo[0][y] == campo[1][y] == campo[2][y] )
+		if( campo[0][y] != ' ' && campo[0][y] == campo[1][y] && campo[1][y] == campo[2][y] )
 		{
 			endGame = true;
-			storeWinner = campo[0][y]; 
+			storeWinner = campo[0][y];
+			break;
 		}
-		else y++;
 	}
+	
 	// check diagonal tris
-	if( (campo[0][0] == campo[1][1] == campo[2][2]) || (campo[2][0] == campo[1][1] == campo[0][2]) )
+	if( campo[1][1] != ' ' && ((campo[0][0] == campo[1][1] && campo[1][1] == campo[2][2]) || (campo[2][0] == campo[1][1] && campo[1][1] == campo[0][2])) )
 	{
 		endGame = true;
 		storeWinner = campo[1][1]; 
@@ -216,7 +222,7 @@ void printField(char campo[][SIZE])
 	printf("%s\n", "---+---+---");
 	printf(" %c | %c | %c \n", campo[1][0], campo[1][1], campo[1][2]);
 	printf("%s\n", "---+---+---");
-	printf(" %c | %c | %c \n", campo[2][0], campo[2][1], campo[2][2]);
+	printf(" %c | %c | %c \n\n", campo[2][0], campo[2][1], campo[2][2]);
 }
 
 
