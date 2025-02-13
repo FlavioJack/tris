@@ -10,14 +10,13 @@
 enum status {WON, LOST, DRAW, NEWGAME, RUNNING}; 
 enum players {PLAYER, ENEMY};
 
-int random_max_min(int, int); 							// function for random number generator
-void game(char campo[][SIZE], enum players *, enum status *); // a single game
-void enemyGame(char campo[][SIZE], enum players *);		// 
-void playerGame(char campo[][SIZE], enum players *);	//
-void checkVictory(char campo[][SIZE], enum status *); 	// function that checks if anyone won
+int random_max_min(int, int); 							// random number generator
+void game(char campo[][SIZE], enum players *, enum status *); // manage a single game
+void enemyGame(char campo[][SIZE], enum players *);		// manage enemy player play
+void playerGame(char campo[][SIZE], enum players *);	// manage main player play
+void checkVictory(char campo[][SIZE], enum status *); 	// checks win, loss, draw
 void clearField(char campo[][SIZE]);					// clear the field so empty the array
 void printField(char campo[][SIZE]); 					// print the field to show it graphically
-
 
 // ============================================================================= //
 // ============================================================================= //
@@ -27,9 +26,9 @@ void printField(char campo[][SIZE]); 					// print the field to show it graphica
 
 int main(void)
 {
-	enum status gameStatus; 		// as soon as we start the program we can assume we're starting a new game
-	enum players selectedPlayer; 	// stores which player is playing
-	char campo[SIZE][SIZE]; 		// define the field as a char array where the players assign 'X' and 'O'
+	enum status gameStatus; 		// stores game status
+	enum players selectedPlayer; 	// stores playing player 
+	char campo[SIZE][SIZE]; 		// field as an array where the players assign 'X' and 'O'
 	bool playAgain; 				// stores if you want to start another game
 
 	srand(time(NULL));
@@ -74,8 +73,6 @@ int main(void)
 // ====================             END  MAIN            ======================= //
 // ============================================================================= //
 // ============================================================================= //
-
-
 
 void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameStatus)
 {
@@ -141,6 +138,7 @@ void playerGame(char campo[][SIZE], enum players * selectedPlayer)
 	
 	*selectedPlayer = ENEMY;
 }
+
 
 // check if the player wins, looses or it's a draw
 void checkVictory(char campo[][SIZE], enum status *gameStatus)
@@ -232,3 +230,4 @@ void printField(char campo[][SIZE])
 int random_max_min(int min, int max){
     return (rand()+min) % (max+1);
 }
+
