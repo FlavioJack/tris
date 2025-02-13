@@ -56,6 +56,8 @@ int main(void)
 		}
 
 		puts("Vuoi avviare una nuova partita? s -> si");
+		while(getchar() != '\n');
+		
 		if(getchar() == 's')
 		{
 			playAgain = true;
