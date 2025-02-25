@@ -4,6 +4,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 #define SIZE 3
 
@@ -123,20 +124,44 @@ void enemyGame(char campo[][SIZE], enum players * selectedPlayer)
 void playerGame(char campo[][SIZE], enum players * selectedPlayer)
 {
 	puts("E' il tuo turno.");
-	size_t x, y; // coordinates
+	char x_input, y_input; 	// user input container
+	size_t x, y; 			// field coordinates
 	do
 	{
-		puts("Inserisci coordinata x: ");
-		scanf("%zu", &x);
-		puts("Inserisci coordinata y: ");
-		scanf("%zu", &y);
+	    puts("Scegli coordinata x tra A e C");
+	    // converting usr input into coordinates
+	    x_input = getchar();
+	    x_input = tolower(x_input);
+        switch(x_input)
+        {
+            case 'a':
+                x = 0;
+                break;
+            case 'b':
+                x = 1;
+                break;
+            case 'c':
+                x = 2;
+                break;
+            case '\n':
+                break;
+            default:
+                break;
+        }
+        while (getchar() != '\n');
+        puts("Scegli coordinata y tra 0 e 2");
+        y_input = getchar();
+        y = y_input - '0';
+        while (getchar() != '\n');
 	}
 	// field must be empty and coordinates between 0 and 2
 	while( x<0 || x>2 || y<0 || y>2 || campo[x][y] != ' ' );
-	
+	// implementare gestione inserimento valore non numerico
+	// implementare inserimento nel campo di gioco piu' user friendly	
 	campo[x][y] = 'X'; // insert player sign
 	
 	*selectedPlayer = ENEMY;
+
 }
 
 
