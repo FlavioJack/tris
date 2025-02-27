@@ -14,9 +14,9 @@ int random_max_min(int, int); 							// random number generator
 void game(char campo[][SIZE], enum players *, enum status *); // manage a single game
 void enemyGame(char campo[][SIZE], enum players *);		// manage enemy player play
 void playerGame(char campo[][SIZE], enum players *);	// manage main player play
-void checkVictory(char campo[][SIZE], enum status *); 	// checks win, loss, draw
+void checkVictory(const char campo[][SIZE], enum status *); 	// checks win, loss, draw
 void clearField(char campo[][SIZE]);					// clear the field so empty the array
-void printField(char campo[][SIZE]); 					// print the field to show it graphically
+void printField(const char campo[][SIZE]); 					// print the field to show it graphically
 
 // ============================================================================= //
 // ============================================================================= //
@@ -141,7 +141,7 @@ void playerGame(char campo[][SIZE], enum players * selectedPlayer)
 
 
 // check if the player wins, looses or it's a draw
-void checkVictory(char campo[][SIZE], enum status *gameStatus)
+void checkVictory(const char campo[][SIZE], enum status *gameStatus)
 {
 	bool endGame = false;
 	char storeWinner; // store the mark (X or O) of the winner
@@ -216,7 +216,7 @@ void clearField(char campo[][SIZE])
 
 
 // print the field on the cli
-void printField(char campo[][SIZE])
+void printField(const char campo[][SIZE])
 {
 	printf(" %c | %c | %c \n", campo[0][0], campo[0][1], campo[0][2]);
 	printf("%s\n", "---+---+---");
