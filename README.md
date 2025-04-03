@@ -1,9 +1,22 @@
 # Tris - Tic Tac Toe
 
+## Table of Contents
+- [Description](#description)
+- [Installation](#installation)
+- [Rules](#rules)
+
 ## Description
 Tic Tac Toe, in italian Filetto or Tris, is a two players game dates back to ancient Rome. The players marks the spaces in a three-by-three grid with X or O. If you place three of the marks in a horizontal, vertical, or diagonal row first you win. 
 This is a project I made while studying at university to train and learn new C skills.
 
+
+## Installation
+Tramite terminale scaricare progetto lanciare eseguibile:
+```bash
+git clone https://github.com/FlavioJack/tris.git
+cd tris/
+.\tris.exe
+```
 ## Rules
 The first player is decided by lot. 
 You can mark with a 'X' wherever you want, the same for the enemy with a 'O'.
