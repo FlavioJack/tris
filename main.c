@@ -11,7 +11,7 @@
 enum status {WON, LOST, DRAW, NEWGAME, RUNNING}; 
 enum players {PLAYER, ENEMY};
 
-float factorial(int);
+float factorial(int); 									// factorial calc func
 int random_max_min(int, int); 							// random number generator
 void game(char campo[][SIZE], enum players *, enum status *); // manage a single game
 void enemyGame(char campo[][SIZE], enum players *);		// manage enemy player play
