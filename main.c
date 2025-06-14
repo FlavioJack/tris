@@ -1,5 +1,5 @@
 // Tris
-
+#include <math.h>
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -29,7 +29,6 @@ float binomial(int n, int k, float p); 					// k num of successes, n num of tria
 
 int main(void)
 {
-	printf("Il fattoriale di 5 è: %f\n", factorial(5));
 	enum status gameStatus; 		// stores game status
 	enum players selectedPlayer; 	// stores playing player 
 	char campo[SIZE][SIZE]; 		// field as an array where the players assign 'X' and 'O'
@@ -257,7 +256,8 @@ void printField(const char campo[][SIZE])
 // probability of winn
 float binomial(int n, int k, float p)
 {
-	float coeffBin; 
+	float coeffBin = factorial(n) / (factorial(k) * factorial(n-k)); 
+	return coeffBin * pow(p,k) * pow((1-p),(n-k)); // ritorna probabilità non in %
 }
 
 // factorial
@@ -272,7 +272,7 @@ float factorial(int n)
 			result *= x;
 		}
 	}
-	return result;
+	return result; 
 }
 
 
