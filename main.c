@@ -11,13 +11,15 @@
 enum status {WON, LOST, DRAW, NEWGAME, RUNNING}; 
 enum players {PLAYER, ENEMY};
 
+float factorial(int);
 int random_max_min(int, int); 							// random number generator
 void game(char campo[][SIZE], enum players *, enum status *); // manage a single game
 void enemyGame(char campo[][SIZE], enum players *);		// manage enemy player play
 void playerGame(char campo[][SIZE], enum players *);	// manage main player play
 void checkVictory(const char campo[][SIZE], enum status *); 	// checks win, loss, draw
 void clearField(char campo[][SIZE]);					// clear the field so empty the array
-void printField(const char campo[][SIZE]); 					// print the field to show it graphically
+void printField(const char campo[][SIZE]); 				// print the field to show it graphically
+float binomial(int n, int k, float p); 					// k num of successes, n num of trials and p probability
 
 // ============================================================================= //
 // ============================================================================= //
@@ -27,6 +29,7 @@ void printField(const char campo[][SIZE]); 					// print the field to show it gr
 
 int main(void)
 {
+	printf("Il fattoriale di 5 è: %f\n", factorial(5));
 	enum status gameStatus; 		// stores game status
 	enum players selectedPlayer; 	// stores playing player 
 	char campo[SIZE][SIZE]; 		// field as an array where the players assign 'X' and 'O'
@@ -248,6 +251,28 @@ void printField(const char campo[][SIZE])
 	printf(" %c | %c | %c \n", campo[1][0], campo[1][1], campo[1][2]);
 	printf("%s\n", "---+---+---");
 	printf(" %c | %c | %c \n\n", campo[2][0], campo[2][1], campo[2][2]);
+}
+
+
+// probability of winn
+float binomial(int n, int k, float p)
+{
+	float coeffBin; 
+}
+
+// factorial
+float factorial(int n)
+{
+	float result = 1;
+	if (n==0) return 1;
+	else 
+	{	
+		for(int x=n; x!=0; x--)
+		{
+			result *= x;
+		}
+	}
+	return result;
 }
 
 
