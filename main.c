@@ -33,6 +33,9 @@ int main(void)
 	enum players selectedPlayer; 	// stores playing player 
 	char campo[SIZE][SIZE]; 		// field as an array where the players assign 'X' and 'O'
 	bool playAgain; 				// stores if you want to start another game
+	int playedGames = 0; 			// stores number of played games
+	int wonGames = 0;				// stores number of wins
+	
 
 	srand(time(NULL));
 
