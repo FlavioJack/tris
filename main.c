@@ -49,19 +49,25 @@ int main(void)
 		{
 			case WON:
 				puts("Complimenti, hai vinto!");
+				wonGames++;
+				playedGames++;
 				break;
 			case LOST:
 				puts("Ops, mi dispiace hai perso.");
+				playedGames++;
 				break;
 			case DRAW:
 				puts("Hai pareggiato.");
+				playedGames++;
 				break;
 			default:
 				puts("Qualcosa è andato storto.");
 		}
 
-		puts("Vuoi avviare una nuova partita? s -> si");
-		while(getchar() != '\n');
+		printf("La probabilita' di vittoria e': %.0f %%\n", binomial(playedGames, wonGames, 0.5)*100);
+
+		puts("Vuoi avviare una nuova partita? s -> si. Altrimenti premi qualsiasi tasto e poi invio");
+		while(getchar() != '\n'); // risolvere bug che devo premere invio 2 volte prima che mi prenda il comando
 		
 		if(getchar() == 's')
 		{
@@ -248,19 +254,20 @@ void clearField(char campo[][SIZE])
 // print the field on the cli
 void printField(const char campo[][SIZE])
 {
-	printf(" %c | %c | %c \n", campo[0][0], campo[0][1], campo[0][2]);
-	printf("%s\n", "---+---+---");
-	printf(" %c | %c | %c \n", campo[1][0], campo[1][1], campo[1][2]);
-	printf("%s\n", "---+---+---");
-	printf(" %c | %c | %c \n\n", campo[2][0], campo[2][1], campo[2][2]);
+	puts("   0   1   2");
+	printf("A  %c | %c | %c \n", campo[0][0], campo[0][1], campo[0][2]);
+	printf("  %s\n", "---+---+---");
+	printf("B  %c | %c | %c \n", campo[1][0], campo[1][1], campo[1][2]);
+	printf("  %s\n", "---+---+---");
+	printf("C  %c | %c | %c \n\n", campo[2][0], campo[2][1], campo[2][2]);
 }
 
 
-// probability of winn
+// probability of win
 float binomial(int n, int k, float p)
 {
 	float coeffBin = factorial(n) / (factorial(k) * factorial(n-k)); 
-	return coeffBin * pow(p,k) * pow((1-p),(n-k)); // ritorna probabilità non in %
+	return ( coeffBin * pow(p,k) * pow((1-p),(n-k)) ); // ritorna probabilità non in %
 }
 
 // factorial
