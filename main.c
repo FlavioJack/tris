@@ -256,9 +256,9 @@ void printField(const char campo[][SIZE])
 {
 	puts("   0   1   2");
 	printf("A  %c | %c | %c \n", campo[0][0], campo[0][1], campo[0][2]);
-	printf("  %s\n", "---+---+---");
+	puts("  ---+---+---");
 	printf("B  %c | %c | %c \n", campo[1][0], campo[1][1], campo[1][2]);
-	printf("  %s\n", "---+---+---");
+	puts("  ---+---+---");
 	printf("C  %c | %c | %c \n\n", campo[2][0], campo[2][1], campo[2][2]);
 }
 
