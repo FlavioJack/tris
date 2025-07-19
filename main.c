@@ -27,8 +27,7 @@ float binomial(int n, int k, float p); 					// k num of successes, n num of tria
 // ============================================================================= //
 // ============================================================================= //
 
-int main(void)
-{
+int main(void){
 	enum status gameStatus; 		// stores game status
 	enum players selectedPlayer; 	// stores playing player 
 	char campo[SIZE][SIZE]; 		// field as an array where the players assign 'X' and 'O'
@@ -36,17 +35,13 @@ int main(void)
 	int playedGames = 0; 			// stores number of played games
 	int wonGames = 0;				// stores number of wins
 	
-
 	srand(time(NULL));
 
-	do
-	{
+	do{
 		gameStatus = NEWGAME;
-
 		game(campo, &selectedPlayer, &gameStatus);
 
-		switch(gameStatus)
-		{
+		switch(gameStatus){
 			case WON:
 				puts("Complimenti, hai vinto!");
 				wonGames++;
@@ -65,12 +60,11 @@ int main(void)
 		}
 
 		printf("La probabilita' di vittoria e': %.0f %%\n", binomial(playedGames, wonGames, 0.5)*100);
-
 		puts("Vuoi avviare una nuova partita? s -> si. Altrimenti premi qualsiasi tasto e poi invio");
+
 		while(getchar() != '\n'); // risolvere bug che devo premere invio 2 volte prima che mi prenda il comando
 		
-		if(getchar() == 's')
-		{
+		if(getchar() == 's'){
 			playAgain = true;
 		}
 		else playAgain = false;
@@ -86,14 +80,12 @@ int main(void)
 // ============================================================================= //
 // ============================================================================= //
 
-void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameStatus)
-{
-	clearField(campo); // clear the field
-	printField(campo); // print the field in the terminal
+void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameStatus){
+	clearField(campo); 
+	printField(campo); 
 	
 	// choose first player based on random number
-	if(random_max_min(0, 1)) 
-	{
+	if(random_max_min(0, 1)){
 		*selectedPlayer = PLAYER; // start player1
 	}  
 	else *selectedPlayer = ENEMY; // start player2
@@ -101,11 +93,9 @@ void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameS
 	*gameStatus = RUNNING; // after i selected the player we can consider the game is running
 
 	// players can play until anyone win
-	while(*gameStatus == RUNNING) 
-	{
+	while(*gameStatus == RUNNING) {
 		// one of the two players play a turn 
-		if(*selectedPlayer == PLAYER)
-		{
+		if(*selectedPlayer == PLAYER){
 			playerGame(campo, selectedPlayer); 
 		}
 		else enemyGame(campo, selectedPlayer); 
@@ -115,36 +105,30 @@ void game(char campo[][SIZE], enum players * selectedPlayer, enum status * gameS
 }
 
 
-void enemyGame(char campo[][SIZE], enum players * selectedPlayer)
-{	
+void enemyGame(char campo[][SIZE], enum players * selectedPlayer){	
 	puts("E' il turno dell'avversario.");
 	size_t x, y;
-	do
-	{	// generate random coordinates between 0 and 2
+	do{	// generate random coordinates between 0 and 2
 		x = random_max_min(0, 2); 
 		y = random_max_min(0, 2);
 	}
 	while(campo[x][y] != ' '); // if the field is already signed, generate another random position
 
 	campo[x][y] = 'O'; // insert enemy player sign
-
 	*selectedPlayer = PLAYER;
 }
 
 
-void playerGame(char campo[][SIZE], enum players * selectedPlayer)
-{
+void playerGame(char campo[][SIZE], enum players * selectedPlayer){
 	puts("E' il tuo turno.");
 	char x_input, y_input; 	// user input container
 	size_t x, y; 			// field coordinates
-	do
-	{
+	do{
 	    puts("Scegli coordinata x tra A e C");
 	    // converting usr input into coordinates
 	    x_input = getchar();
 	    x_input = tolower(x_input);
-        switch(x_input)
-        {
+        switch(x_input){
             case 'a':
                 x = 0;
                 break;
@@ -170,23 +154,17 @@ void playerGame(char campo[][SIZE], enum players * selectedPlayer)
 	// implementare gestione inserimento valore non numerico
 	// implementare inserimento nel campo di gioco piu' user friendly	
 	campo[x][y] = 'X'; // insert player sign
-	
 	*selectedPlayer = ENEMY;
-
 }
 
-
 // check if the player wins, looses or it's a draw
-void checkVictory(const char campo[][SIZE], enum status *gameStatus)
-{
+void checkVictory(const char campo[][SIZE], enum status *gameStatus){
 	bool endGame = false;
 	char storeWinner; // store the mark (X or O) of the winner
 
 	// check horizontal tris
-	for(size_t x=0; x<SIZE; x++)
-	{
-		if( campo[x][0] != ' ' && campo[x][0] == campo[x][1] && campo[x][1] == campo[x][2] )
-		{
+	for(size_t x=0; x<SIZE; x++){
+		if( campo[x][0] != ' ' && campo[x][0] == campo[x][1] && campo[x][1] == campo[x][2] ){
 			endGame = true;
 			storeWinner = campo[x][0];
 			break; 
@@ -194,10 +172,8 @@ void checkVictory(const char campo[][SIZE], enum status *gameStatus)
 	}
 
 	// check vertical tris
-	for(size_t y=0; y<SIZE; y++)
-	{
-		if( campo[0][y] != ' ' && campo[0][y] == campo[1][y] && campo[1][y] == campo[2][y] )
-		{
+	for(size_t y=0; y<SIZE; y++){
+		if( campo[0][y] != ' ' && campo[0][y] == campo[1][y] && campo[1][y] == campo[2][y] ){
 			endGame = true;
 			storeWinner = campo[0][y];
 			break;
@@ -205,55 +181,42 @@ void checkVictory(const char campo[][SIZE], enum status *gameStatus)
 	}
 	
 	// check diagonal tris
-	if( campo[1][1] != ' ' && ((campo[0][0] == campo[1][1] && campo[1][1] == campo[2][2]) || (campo[2][0] == campo[1][1] && campo[1][1] == campo[0][2])) )
-	{
+	if( campo[1][1] != ' ' && ((campo[0][0] == campo[1][1] && campo[1][1] == campo[2][2]) || (campo[2][0] == campo[1][1] && campo[1][1] == campo[0][2])) ){
 		endGame = true;
 		storeWinner = campo[1][1]; 
 	}
 
 	// check draw
 	short countMarked = 0; // count number of full spaces to check the draw
-	for(size_t i=0; i<SIZE; i++)
-	{
-		for(size_t j=0; j<SIZE; j++)
-		{	// count marked spaces
-			if( (campo[i][j] != ' ') && (campo[i][j] == 'X' || campo[i][j] == 'O') ) // la casella non deve essere vuota e contemporaneamente essere o X oppure O
-			{
+	for(size_t i=0; i<SIZE; i++){
+		for(size_t j=0; j<SIZE; j++){	// count marked spaces
+			if( (campo[i][j] != ' ') && (campo[i][j] == 'X' || campo[i][j] == 'O') ){  // la casella non deve essere vuota e contemporaneamente essere o X oppure O
 				countMarked++;
 			}
 			else countMarked--;
 		}
 	}
-	if(countMarked == 9 && !endGame) // if the spaces are all full and anyone won or lost (endGame is true in those cases)
-	{
+	if(countMarked == 9 && !endGame)  // if the spaces are all full and anyone won or lost (endGame is true in those cases)
 		*gameStatus = DRAW;
-	}
 
 	// check who won
 	if(endGame)
-	{	
 		*gameStatus = (storeWinner == 'X') ? WON : LOST;
-	}
 }
 
 
 // clear the field so empty the array
-void clearField(char campo[][SIZE])
-{
-	for(size_t i=0; i<SIZE; i++)
-	{
+void clearField(char campo[][SIZE]){
+	for(size_t i=0; i<SIZE; i++){
 		for(size_t j=0; j<SIZE; j++)
-		{
 			campo[i][j] = ' ';
-		}
 	}
 }
 
 
 
 // print the field on the cli
-void printField(const char campo[][SIZE])
-{
+void printField(const char campo[][SIZE]){
 	puts("   0   1   2");
 	printf("A  %c | %c | %c \n", campo[0][0], campo[0][1], campo[0][2]);
 	puts("  ---+---+---");
@@ -264,23 +227,18 @@ void printField(const char campo[][SIZE])
 
 
 // probability of win
-float binomial(int n, int k, float p)
-{
+float binomial(int n, int k, float p){
 	float coeffBin = factorial(n) / (factorial(k) * factorial(n-k)); 
 	return ( coeffBin * pow(p,k) * pow((1-p),(n-k)) ); // ritorna probabilità non in %
 }
 
 // factorial
-float factorial(int n)
-{
+float factorial(int n){
 	float result = 1;
 	if (n==0) return 1;
-	else 
-	{	
+	else {	
 		for(int x=n; x!=0; x--)
-		{
 			result *= x;
-		}
 	}
 	return result; 
 }
