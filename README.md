@@ -12,7 +12,7 @@ This is a project I made while studying at university to train and learn new C s
 
 
 ## Installation
-Tramite terminale scaricare progetto lanciare eseguibile:
+Download project, move into the directory and run the exe file with terminal:
 ```bash
 git clone https://github.com/FlavioJack/tris.git
 cd tris/
